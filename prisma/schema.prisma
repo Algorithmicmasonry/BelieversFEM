@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String 
+  emailVerified Boolean 
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  firstName     String
+  lastName      String
+  password String? 
+  sessions      Session[]
+  accounts      Account[]
+  business      Business?
+  phone         String?
+  WhatsappNumber String?
+  onboarded       Boolean      @default(false)
+  token           Int?
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  accountId             String
+  providerId            String
+  userId                String    @db.ObjectId
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+id         String    @id @default(cuid()) @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+
+// app models
+
+model Business {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String    @unique @map("user_id") @db.ObjectId
+  businessName    String    @map("business_name")
+  businessType    String 
+  businessImageUrl String?
+  subdomain       String    @unique
+  whatsappNumber  String    @map("whatsapp_number")
+  bankAccountNumber String? @map("bank_account_number")
+  bankAccountName   String? @map("bank_account_name")
+  bankCode          String? @map("bank_code")
+  settlementSchedule String @default("weekly")
+  transactionFeeRate Float  @default(0.025)
+  isActive        Boolean   @default(true) @map("is_active")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products        Product[]
+  storeViews      StoreView[]
+  whatsappClicks  WhatsAppClick[]
+  transactions    Transaction[]
+  
+  @@map("businesses")
+}
+
+model Product {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  businessId  String    @map("business_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float
+  imageUrl    String?   @map("image_url")
+  isActive    Boolean   @default(true) @map("is_active")
+  sortOrder   Int       @default(0) @map("sort_order")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  
+  business       Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  whatsappClicks WhatsAppClick[]
+  transactions   Transaction[]
+  
+  @@map("products")
+}
+
+model StoreView {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  businessId String   @map("business_id") @db.ObjectId
+  visitorIp  String   @map("visitor_ip")
+  userAgent  String?  @map("user_agent")
+  viewedAt   DateTime @default(now()) @map("viewed_at")
+  
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  @@map("store_views")
+}
+
+model WhatsAppClick {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId  String   @map("product_id") @db.ObjectId
+  businessId String   @map("business_id") @db.ObjectId
+  visitorIp  String   @map("visitor_ip")
+  clickedAt  DateTime @default(now()) @map("clicked_at")
+  
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  @@map("whatsapp_clicks")
+}
+
+model Transaction {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  businessId      String   @map("business_id") @db.ObjectId
+  productId       String   @map("product_id") @db.ObjectId
+  amount          Float
+  platformFee     Float    @map("platform_fee")
+  settlementAmount Float   @map("settlement_amount")
+  paystackRef     String   @map("paystack_ref")
+  customerEmail   String?  @map("customer_email")
+  status          String   // pending, completed, failed
+  settledAt       DateTime? @map("settled_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  
+  business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@map("transactions")
+}
