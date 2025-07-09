@@ -24,20 +24,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 
-// Mock data
-const mockUser = {
-  name: "John Doe",
-  email: "john@example.com",
-  avatar: "/placeholder.svg?height=40&width=40",
-}
 
-const mockBusiness = {
-  name: "Fashion Hub",
-  subdomain: "fashion-hub",
-  whatsappNumber: "+234 801 234 5678",
-  isActive: true,
-  createdAt: "2024-01-15",
-}
+
 
 const sidebarItems = [
   {
@@ -72,12 +60,30 @@ const sidebarItems = [
   },
 ]
 
-export default function DashboardLayoutClient({ children }: { children: React.ReactNode }) {
+interface DashboardLayoutClientProps {
+  children: React.ReactNode
+  data: {
+    user: {
+      name: string
+      email: string
+      avatar?: string
+    } | null
+    business: {
+      name: string
+      subdomain: string
+      whatsappNumber: string
+      isActive: boolean
+      createdAt: string
+    } | null
+  }
+}
+
+export default function DashboardLayoutClient({ children, data }: DashboardLayoutClientProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
 
   const copyStoreLink = () => {
-    navigator.clipboard.writeText(`https://${mockBusiness.subdomain}.ekii.com`)
+    navigator.clipboard.writeText(`https://${data?.business?.subdomain}.ekii.com`)
     // You would show a toast notification here
   }
 
@@ -109,14 +115,14 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
           {/* Business Info */}
           <div className="p-4 border-b bg-orange-50">
             <div className="space-y-2">
-              <h3 className="font-semibold text-gray-900 truncate">{mockBusiness.name}</h3>
+              <h3 className="font-semibold text-gray-900 truncate">{data?.business?.name}</h3>
               <div className="flex items-center space-x-2">
                 <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
                   Store Active
                 </Badge>
               </div>
               <div className="flex items-center space-x-1">
-                <code className="text-xs text-gray-600 truncate">{mockBusiness.subdomain}.ekii.com</code>
+                <code className="text-xs text-gray-600 truncate">{data?.business?.subdomain}.ekii.com</code>
                 <Button onClick={copyStoreLink} variant="ghost" size="sm" className="h-6 w-6 p-0">
                   <Copy className="h-3 w-3" />
                 </Button>
@@ -147,7 +153,7 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
 
           {/* Quick Actions */}
           <div className="p-4 border-t space-y-2">
-            <Link href={`https://${mockBusiness.subdomain}.ekii.com`} target="_blank">
+            <Link href={`https://${data?.business?.subdomain}.ekii.com`} target="_blank">
               <Button size="sm" className="w-full bg-orange-500 hover:bg-orange-600">
                 <ExternalLink className="h-4 w-4 mr-2" />
                 View Store
@@ -161,12 +167,12 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="w-full justify-start p-2">
                   <Avatar className="h-8 w-8 mr-3">
-                    <AvatarImage src={mockUser.avatar || "/placeholder.svg"} alt={mockUser.name} />
+                    <AvatarImage src={data?.user?.avatar || "/placeholder.svg"} alt={data?.user?.name} />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 text-left">
-                    <p className="text-sm font-medium text-gray-900 truncate">{mockUser.name}</p>
-                    <p className="text-xs text-gray-500 truncate">{mockUser.email}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{data?.user?.name}</p>
+                    <p className="text-xs text-gray-500 truncate">{data?.user?.email}</p>
                   </div>
                 </Button>
               </DropdownMenuTrigger>
@@ -209,7 +215,7 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
                 Copy Store Link
               </Button>
 
-              <Link href={`https://${mockBusiness.subdomain}.ekii.com`} target="_blank">
+              <Link href={`https://${data?.business?.subdomain}.ekii.com`} target="_blank">
                 <Button size="sm" className="bg-orange-500 hover:bg-orange-600">
                   <ExternalLink className="h-4 w-4 mr-2" />
                   <span className="hidden sm:inline">View Store</span>
