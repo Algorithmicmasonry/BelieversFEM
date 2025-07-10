@@ -1,7 +1,12 @@
 import RegisterForm from "@/components/Forms/RegisterForm";
 import Image from "next/image";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "I.V.I.E - Register",
+  description: "Put in your details to get started with I.V.I.E",
+};
 
 
 export default function RegisterPage() {
