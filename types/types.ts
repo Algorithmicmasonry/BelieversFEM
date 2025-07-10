@@ -25,11 +25,11 @@ export type SessionUser = {
   updatedAt: Date;
 };
 
-export interface product {
+export interface Product {
   name: string;
   description: string;
   price: string;
-  imageUrl: string
+  images: string[];
 }
 
 export interface FormData {
@@ -37,7 +37,12 @@ export interface FormData {
   businessType: string;
   whatsappNumber: string;
   businessImageUrl: string;
-  products: product[];
+  products: Product[];
+  bankAccountName: string;
+  bankAccountNumber: string;
+  bankCode: string;
+  settlementSchedule: string;
+  subdomain: string;
 }
 
 export interface FormErrors {

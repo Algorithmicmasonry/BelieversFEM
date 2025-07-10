@@ -3,6 +3,8 @@ import { Rethink_Sans } from "next/font/google";
 import "@/app/globals.css";
 // import Navbar from "@/components/home-page/navbar";
 
+  export const dynamic = 'force-dynamic';
+
 const inter = Rethink_Sans({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {

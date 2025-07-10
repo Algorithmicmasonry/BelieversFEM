@@ -4,6 +4,8 @@ import "../globals.css";
 import DashboardLayoutClient from "@/components/dashboard/dashboard-layout-client";
 import { getDashboardLayoutData } from "@/actions/dashboardLayout";
 
+export const dynamic = 'force-dynamic';
+
 const inter = Rethink_Sans({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {

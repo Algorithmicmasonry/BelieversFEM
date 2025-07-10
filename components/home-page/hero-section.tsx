@@ -29,16 +29,12 @@ export default async function HeroSection() {
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center">
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full h-12 px-6 text-base"
-          >
-            <Link href="/register">
+          <Link href="/register">
+            <Button size="lg" className="rounded-full h-12 px-6 text-base">
               Create Your Own Store
               <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <CustomLinkButton title="Login" href="/login" />
           {/* <Button
             asChild

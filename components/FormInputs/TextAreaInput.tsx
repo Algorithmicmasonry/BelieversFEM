@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 type TextAreaProps = {
-  register: any;
-  errors: any;
+  register: any;// eslint-disable-line @typescript-eslint/no-explicit-any
+  errors: any;// eslint-disable-line @typescript-eslint/no-explicit-any
   label: string;
   name: string;
   helperText?: string;

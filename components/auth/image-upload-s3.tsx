@@ -5,6 +5,7 @@ import { useState, useRef } from "react"
 import { Upload, X, ImageIcon, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface ImageUploadProps {
   value?: string
@@ -107,6 +108,7 @@ export function ImageUpload({
     } catch (error) {
       alert('Failed to upload image. Please try again.')
       onChange("")
+      console.log("This is the error", error)
     }
   }
 
@@ -153,7 +155,7 @@ export function ImageUpload({
   if (value) {
     return (
       <div className={cn("relative inline-block", className)}>
-        <img
+        <Image
           src={value}
           alt="Uploaded preview"
           className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"

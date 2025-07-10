@@ -1,25 +1,25 @@
 "use client";
-import { cn } from "@/lib/utils";
-import React, { useState } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
-import { CircleHelp, Eye, EyeOff, Mail } from "lucide-react";
+import { CircleHelp, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 type TextInputProps = {
-  register: any;
-  errors: any;
+ register: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  errors: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   label: string;
   type?: string;
   name: string;
   toolTipText?: string;
   placeholder?: string;
   forgotPasswordLink?: string;
-  icon?: any;
+  icon?: any;// eslint-disable-line @typescript-eslint/no-explicit-any
 };
 export default function PasswordInput({
   register,

@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -18,39 +16,27 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  DollarSign,
-  Bell,
-  Menu,
-  Users,
-  GraduationCap,
-  MessageSquare,
-  ClipboardList,
-  Bus,
-  BarChart2,
-  BookOpen,
-  CalendarDays,
-  FileText,
-  Shield,
-  Layout,
-  CloudUpload,
-  Edit3,
-  Database,
-  BarChart,
-  Lock,
-  Store,
-  ScanBarcode,
-  UsersRound,
-  WalletMinimal,
-  MapPinPlus,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
+import {
+  BarChart,
+  BarChart2,
+  ChevronDown,
+  Layout,
+  Lock,
+  MapPinPlus,
+  Menu,
+  ScanBarcode,
+  Store,
+  UsersRound,
+  WalletMinimal
+} from "lucide-react";
+import Link from "next/link";
+import * as React from "react";
 
-import Logo from "../global/logo";
-import { Session } from "next-auth";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getInitials } from "@/lib/generateInitials";
+import { Session } from "better-auth"; 
+import Logo from "@/global/logo";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const features = [
   {
@@ -220,11 +206,11 @@ export default function SiteHeader({ session }: { session: Session | null }) {
             <Link href="/dashboard">
               <Avatar>
                 <AvatarImage
-                  src={session?.user?.image ?? ""}
-                  alt={session?.user?.name ?? ""}
+                  src={session?.userId ?? ""}
+                  alt={session?.userId ?? ""}
                 />
                 <AvatarFallback>
-                  {getInitials(session?.user?.name)}
+                  {getInitials(session?.userId ?? "")}
                 </AvatarFallback>
               </Avatar>
               <span className="ml-3">Dashboard</span>

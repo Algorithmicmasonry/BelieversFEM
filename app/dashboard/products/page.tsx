@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import Image from "next/image"
 
 // Mock data
 const mockProducts = [
@@ -74,7 +75,7 @@ export default function ProductsPage() {
               <div className="flex items-start space-x-4">
                 {/* Product Image */}
                 <div className="flex-shrink-0">
-                  <img
+                  <Image
                     src={product.imageUrl || "/placeholder.svg"}
                     alt={product.name}
                     className="w-20 h-20 object-cover rounded-lg border"

@@ -7,8 +7,9 @@ export interface Product {
   name: string;
   description: string;
   price: string;
-  imageUrl: string;
+  images: string[]; // ✅ Fix: array of image URLs
 }
+
 
 export interface FormData {
   businessName: string;
@@ -105,7 +106,12 @@ export const handleOnboarding = async (data: FormData) => {
               name: product.name.trim(),
               description: product.description?.trim() || null,
               price: parseFloat(product.price),
-              imageUrl: product.imageUrl?.trim() || null,
+              images: {
+  create: product.images.map((url) => ({
+    url: url.trim(),
+  })),
+},
+
               sortOrder: index,
               isActive: true,
             }

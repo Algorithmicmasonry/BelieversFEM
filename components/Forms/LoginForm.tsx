@@ -8,14 +8,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaGoogle } from "react-icons/fa";
+import { BackButton } from "../auth/back-button";
 import SignInSocial from "../auth/sign-in-social";
 import PasswordInput from "../FormInputs/PasswordInput";
 import SubmitButton from "../FormInputs/SubmitButton";
 import TextInput from "../FormInputs/TextInput";
 import CustomCarousel from "../frontend/custom-carousel";
-import Logo from "@/global/logo";
 import { Button } from "../ui/button";
-import { BackButton } from "../auth/back-button";
 
 
 export default function LoginForm() {
@@ -45,7 +44,8 @@ export default function LoginForm() {
         // setShowNotification(true);
       } else {
         // Sign-in was successful
-        // setShowNotification(false);
+        // setShowNotification(false);;
+        console.log(returnUrl);
         reset();
 
         toast.success("Login Successful");

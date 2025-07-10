@@ -23,7 +23,6 @@ export default function RegisterForm() {
     handleSubmit,
     register,
     formState: { errors },
-    reset,
   } = useForm<UserProps>();
   const router = useRouter();
 

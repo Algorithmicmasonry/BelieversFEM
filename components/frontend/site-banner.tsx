@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import posthog from "posthog-js";
+
 
 export function SiteBanner() {
   return (
@@ -11,7 +11,7 @@ export function SiteBanner() {
         {/* posthog.capture('my event', { property: 'value' }) */}
         <Link
           href="#"
-          onClick={() => posthog.capture("banner_cta_clicked")}
+          // onClick={() => posthog.capture("banner_cta_clicked")}
           target="_blank"
           className="inline-flex text-xs leading-normal md:text-sm"
         >

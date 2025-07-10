@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-let interval: any;
+let interval: any;// eslint-disable-line @typescript-eslint/no-explicit-any
 
 type Card = {
   id: number;

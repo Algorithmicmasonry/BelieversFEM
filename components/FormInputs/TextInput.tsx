@@ -1,23 +1,22 @@
-import { cn } from "@/lib/utils";
-import React from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
-import { CircleHelp, Mail } from "lucide-react";
+import { CircleHelp } from "lucide-react";
 type TextInputProps = {
-  register: any;
-  errors: any;
+  register: any;// eslint-disable-line @typescript-eslint/no-explicit-any
+  errors: any;// eslint-disable-line @typescript-eslint/no-explicit-any
   label: string;
   type?: string;
   name: string;
   toolTipText?: string;
   unit?: string;
   placeholder?: string;
-  icon?: any;
+  icon?: any;// eslint-disable-line @typescript-eslint/no-explicit-any
 };
 export default function TextInput({
   register,

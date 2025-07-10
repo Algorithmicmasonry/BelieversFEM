@@ -10,8 +10,8 @@ export default function QuillEditor({
 }: {
   label: string;
   className: string;
-  value: any;
-  onChange: any;
+  value: any;// eslint-disable-line @typescript-eslint/no-explicit-any
+  onChange: any;// eslint-disable-line @typescript-eslint/no-explicit-any
 }) {
   const modules = {
     toolbar: [

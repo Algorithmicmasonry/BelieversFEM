@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {mockTimelineData.map((day, index) => (
+              {mockTimelineData.map((day) => (
                 <div key={day.date} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="text-sm font-medium">

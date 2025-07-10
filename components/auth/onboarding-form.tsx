@@ -1,3 +1,4 @@
+// ./components/auth/onboarding-form.tsx
 "use client";
 
 import { type FormEvent, useEffect, useState } from "react";
@@ -37,23 +38,9 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { handleOnboarding } from "@/actions/handleOnboarding";
 import { ImageUploadNormal } from "./image-upload-normal";
-import type { FormData } from "@/types/types";
+import type { FormData, Product } from "@/types/types"; // Import Product type
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
-// xport interface product {
-//   name: string;
-//   description: string;
-//   price: string;
-//   imageUrl: string
-// }
-
-// export interface FormData {
-//   businessName: string;
-//   businessType: string;
-//   whatsappNumber: string;
-//   products: product[];
-// }
 
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -69,7 +56,14 @@ export default function OnboardingPage() {
     businessType: "",
     whatsappNumber: "",
     products: [],
+    bankAccountNumber: "", // Initialize all properties
+    bankAccountName: "",
+    bankCode: "",
+    settlementSchedule: "",
+    subdomain: "",
   });
+
+  console.log("The name of the game: ", data);
 
   // Contact Information
   const [whatsappNumber, setWhatsappNumber] = useState("");
@@ -81,9 +75,9 @@ export default function OnboardingPage() {
   const [settlementSchedule, setSettlementSchedule] = useState("weekly");
   const [subdomainName, setSubdomainName] = useState("");
 
-  // Products
-  const [products, setProducts] = useState([
-    { name: "", description: "", price: "", imageUrl: "" },
+  // Products - Initialize with 'images' array
+  const [products, setProducts] = useState<Product[]>([
+    { name: "", description: "", price: "", images: [] },
   ]);
   const router = useRouter();
 
@@ -152,10 +146,7 @@ export default function OnboardingPage() {
 
   const addProduct = () => {
     if (products.length < 5) {
-      setProducts([
-        ...products,
-        { name: "", description: "", price: "", imageUrl: "" },
-      ]);
+      setProducts([...products, { name: "", description: "", price: "", images: [] }]); // Initialize images as an empty array
     }
   };
 
@@ -165,9 +156,15 @@ export default function OnboardingPage() {
     }
   };
 
-  const updateProduct = (index: number, field: string, value: string) => {
+  // Modify updateProduct to handle 'images'
+  const updateProduct = (index: number, field: keyof Product, value: string | string[]) => {
     const updatedProducts = products.map((product, i) =>
-      i === index ? { ...product, [field]: value } : product
+      i === index
+        ? {
+            ...product,
+            [field]: field === "images" ? (Array.isArray(value) ? value : [value]) : value,
+          }
+        : product
     );
     setProducts(updatedProducts);
   };
@@ -211,11 +208,11 @@ export default function OnboardingPage() {
       return; // Don't proceed if validation fails
     }
 
-    const formData = {
+    const formData: FormData = { // Explicitly type formData as FormData
       businessName,
       businessType,
       whatsappNumber,
-      products,
+      products, // This will now match the Product[] type
       businessImageUrl,
       bankAccountNumber,
       bankAccountName,
@@ -260,7 +257,8 @@ export default function OnboardingPage() {
       case 3:
         return bankAccountNumber && bankAccountName && bankCode;
       case 4:
-        return products.every((p) => p.name && p.price);
+        // Ensure all products have a name, price, and at least one image
+        return products.every((p) => p.name && p.price && p.images.length > 0);
       default:
         return false;
     }
@@ -402,7 +400,7 @@ export default function OnboardingPage() {
                     />
                     <p className="text-sm text-gray-500">
                       Customers will use this number to contact you about
-                      orders. Make sure it's active on WhatsApp.
+                      orders. Make sure it&apos;s active on WhatsApp.
                     </p>
                   </div>
 
@@ -429,7 +427,7 @@ export default function OnboardingPage() {
                       Payment Setup
                     </h3>
                     <p className="text-sm text-green-700">
-                      We'll use this information to set up payments for your
+                      We&apos;ll use this information to set up payments for your
                       store. Your customers will be able to pay directly through
                       your store.
                     </p>
@@ -586,9 +584,9 @@ export default function OnboardingPage() {
                             Product Image
                           </Label>
                           <ImageUploadNormal
-                            value={product.imageUrl}
+                            value={product.images[0] || ""} // Pass the first image URL or an empty string
                             onChange={(url) =>
-                              updateProduct(index, "imageUrl", url)
+                              updateProduct(index, "images", [url]) // Update the images array
                             }
                             uploadType="product"
                             placeholder="Upload Product Image"

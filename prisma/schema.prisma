@@ -111,23 +111,37 @@ model Business {
 }
 
 model Product {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  businessId  String    @map("business_id") @db.ObjectId
-  name        String
-  description String?
-  price       Float
-  imageUrl    String?   @map("image_url")
-  isActive    Boolean   @default(true) @map("is_active")
-  sortOrder   Int       @default(0) @map("sort_order")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  
-  business       Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  businessId     String         @map("business_id") @db.ObjectId
+  name           String
+  description    String?
+  price          Float
+  isActive       Boolean        @default(true) @map("is_active")
+  sortOrder      Int            @default(0) @map("sort_order")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  business       Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
   whatsappClicks WhatsAppClick[]
   transactions   Transaction[]
-  
+  images         Image[]        @relation("ProductImages")
+
   @@map("products")
 }
+
+
+model Image {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @map("product_id") @db.ObjectId
+  url       String
+  altText   String?  // optional, good for accessibility
+  createdAt DateTime @default(now()) @map("created_at")
+
+  product   Product  @relation("ProductImages", fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("images")
+}
+
 
 model StoreView {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId

@@ -1,13 +1,11 @@
-import { Store } from 'lucide-react'
-import Link from 'next/link'
-import React from 'react'
-import { Button } from '../ui/button'
 import Logo from '@/global/logo'
+import Link from 'next/link'
+import { Button } from '../ui/button'
 
 const Navbar = () => {
   return (
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Logo/>
           </div>

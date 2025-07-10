@@ -216,7 +216,7 @@ export default function MessagesPage() {
             <div>
               <h4 className="font-medium text-gray-900 mb-2">How it works:</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Customers click "Order Now" on your products</li>
+                <li>• Customers click &quot;Order Now&quot; on your products</li>
                 <li>• Pre-filled WhatsApp messages are generated</li>
                 <li>• Messages include product name and price</li>
                 <li>• You receive notifications here and on WhatsApp</li>

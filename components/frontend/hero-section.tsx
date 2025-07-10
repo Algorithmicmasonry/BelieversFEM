@@ -2,9 +2,9 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SmallTitle from "./small-title";
 import Link from "next/link";
-import { CustomLinkButton } from "../global/CustomLinkButton";
-import StarRating from "../global/StarRating";
-import { AnimatedAvatars } from "../global/avatar-circles";
+import { CustomLinkButton } from "@/global/CustomLinkButton";
+import StarRating from "@/global/StarRating";
+import { AnimatedAvatars } from "@/global/avatar-circles";
 
 
 export default async function HeroSection() {

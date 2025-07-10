@@ -48,7 +48,7 @@ const CARDS = [
     content: (
       <p>
         What impressed me most was how easy it was to track sales across all my branches.
-        <Highlight>PharmOS' POS system</Highlight> is fast, intuitive, and built for busy pharmacies like ours.
+        <Highlight>PharmOS&pos; POS system</Highlight> is fast, intuitive, and built for busy pharmacies like ours.
       </p>
     ),
   },
@@ -58,8 +58,8 @@ const CARDS = [
     designation: "Inventory Manager, VitalCare",
     content: (
       <p>
-        Our workflow has improved dramatically. With <Highlight>PharmOS' expiry tracking</Highlight> and 
-        <Highlight>WhatsApp alerts</Highlight>, we’re always ahead of issues before they become problems.
+        Our workflow has improved dramatically. With <Highlight>PharmOS&apos; expiry tracking</Highlight> and 
+        <Highlight>WhatsApp alerts</Highlight>, we&apos;re always ahead of issues before they become problems.
       </p>
     ),
   },
