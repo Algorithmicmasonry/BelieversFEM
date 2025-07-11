@@ -1,12 +1,14 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SmallTitle from "./small-title";
 import Link from "next/link";
 import { CustomLinkButton } from "@/global/CustomLinkButton";
 import StarRating from "@/global/StarRating";
 import { AnimatedAvatars } from "@/global/avatar-circles";
+// import { useState } from "react";
 
 export default async function HeroSection() {
+  // const [isLoading, setIsLoading] = useState(true)
   return (
     <section className="relative min-h-[100vh] w-full flex items-center justify-center bg-background text-foreground">
       {/* blobs */}
@@ -29,13 +31,17 @@ export default async function HeroSection() {
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center">
-          <Link href="/register">
-            <Button size="lg" className="rounded-full h-12 px-6 text-base">
-              Create Your Own Store
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-          <CustomLinkButton title="Login" href="/login" />
+          <div className="cursor-pointer flex items-center justify-center">
+            <Link href="/register">
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white py-4 px-2 rounded-lg font-xl">
+                Create Your own store
+              </Button>
+            </Link>
+          </div>
+          <div>
+            <CustomLinkButton title="Login" href="/login" />
+          </div>
+
           {/* <Button
             asChild
             size="lg"

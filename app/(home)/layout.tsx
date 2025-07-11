@@ -6,8 +6,8 @@ import Navbar from "@/components/home-page/navbar";
 const inter = Rethink_Sans({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "EKii",
-  description: "Create an online store for your business in minutes",
+  title: "I.V.I.E",
+  description: "Your all-in-one intelligent Virutal Interface For Enterprises",
 };
 
 export default function RootLayout({
