@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SmallTitle from "./small-title";
@@ -5,10 +7,10 @@ import Link from "next/link";
 import { CustomLinkButton } from "@/global/CustomLinkButton";
 import StarRating from "@/global/StarRating";
 import { AnimatedAvatars } from "@/global/avatar-circles";
-// import { useState } from "react";
+import { useState } from "react";
 
-export default async function HeroSection() {
-  // const [isLoading, setIsLoading] = useState(true)
+export default function HeroSection() {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <section className="relative min-h-[100vh] w-full flex items-center justify-center bg-background text-foreground">
       {/* blobs */}
@@ -31,13 +33,21 @@ export default async function HeroSection() {
         </p>
 
         <div className="flex flex-wrap gap-4 justify-center">
-          <div className="cursor-pointer flex items-center justify-center">
+          <Button
+            asChild
+            size="lg"
+            className="rounded-full h-12 px-6 text-base"
+            onClick={() => setIsLoading(true)}
+          >
             <Link href="/register">
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white py-4 px-2 rounded-lg font-xl">
-                Create Your own store
-              </Button>
+              Create Your Own Store
+              {isLoading ? (
+                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+              ) : (
+                <ArrowRight className="ml-2 h-4 w-4" />
+              )}
             </Link>
-          </div>
+          </Button>
           <div>
             <CustomLinkButton title="Login" href="/login" />
           </div>
