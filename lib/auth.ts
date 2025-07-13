@@ -1,59 +1,59 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmail } from "./email";
- 
-const prisma = new PrismaClient();
- 
+
+const prisma = new PrismaClient({
+  log: ["query", "info", "warn", "error"],
+});
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "mongodb",
   }),
   user: {
-    // Remove the fields configuration entirely
     additionalFields: {
       firstName: {
         type: "string",
-        required: true
+        required: true,
       },
       lastName: {
-        type: "string", 
-        required: true
-      }
-    }
+        type: "string",
+        required: true,
+      },
+    },
   },
   advanced: {
     database: {
-      generateId: false, 
+      generateId: false,
     },
   },
-  emailAndPassword: {  
+  emailAndPassword: {
     enabled: true,
     autoSignIn: false,
     account: {
       accountLinking: {
         enabled: true,
-      }
+      },
     },
-    sendResetPassword : async ({user, url}) => {
+    sendResetPassword: async ({ user, url }) => {
       await sendEmail({
-        to:user.email,
+        to: user.email,
         subject: "Reset your password",
-        text: `Click the link to reset your password: ${url}`
-      })
+        text: `Click the link to reset your password: ${url}`,
+      });
     },
     resetPasswordTokenExpiresIn: 3600,
   },
-  socialProviders: { 
-    // github: { 
-    //   clientId: process.env.GITHUB_CLIENT_ID as string, 
-    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
-    // }, 
+  socialProviders: {
     google: {
-      prompt: "select_account", 
+      prompt: "select_account",
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      redirectURI: `${
+        process.env.NEXT_PUBLIC_AUTH_BASE_URL || "http://localhost:3000"
+      }/api/auth/callback/google`,
       mapProfileToUser: (profile) => {
         return {
           firstName: profile.given_name,
@@ -62,6 +62,24 @@ export const auth = betterAuth({
         };
       },
     },
-  }, 
-  plugins: [nextCookies()]
+  },
+  plugins: [nextCookies()],
+  errorHandler: (error: unknown) => {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error("Prisma Error:", {
+        code: error.code,
+        message: error.message,
+        meta: error.meta,
+        stack: error.stack,
+      });
+    } else if (error instanceof Error) {
+      console.error("Generic Error:", {
+        message: error.message,
+        stack: error.stack,
+      });
+    } else {
+      console.error("Unknown Error:", error);
+    }
+    throw error;
+  },
 });

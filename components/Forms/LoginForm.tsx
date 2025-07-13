@@ -51,7 +51,6 @@ export default function LoginForm() {
         toast.success("Login Successful");
         setPassErr("");
         router.push("/dashboard");
-        setLoading(false);
       }
     } catch (error) {
       setLoading(false);
