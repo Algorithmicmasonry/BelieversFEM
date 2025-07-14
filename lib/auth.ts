@@ -1,18 +1,19 @@
-// lib/auth.ts
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { nextCookies } from "better-auth/next-js";
 import { sendEmail } from "./email";
+import { withAccelerate } from "@prisma/extension-accelerate";
+
 
 const prisma = new PrismaClient({
   log: ["query", "info", "warn", "error"],
   datasources: {
     db: {
-      url: process.env.DATABASE_URL,
+      url: process.env.DATABASE_URL || process.env.DIRECT_DATABASE_URL,
     },
   },
-});
+}).$extends(withAccelerate());
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
