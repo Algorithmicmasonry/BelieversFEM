@@ -6,6 +6,11 @@ import { sendEmail } from "./email";
 
 const prisma = new PrismaClient({
   log: ["query", "info", "warn", "error"],
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL, // Ensure MongoDB URL is used
+    },
+  },
 });
 
 export const auth = betterAuth({
