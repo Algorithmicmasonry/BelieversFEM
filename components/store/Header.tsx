@@ -16,9 +16,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
       {/* Top bar */}
-      <div className="bg-gray-900 text-white py-2 px-4 text-center text-sm">
+      {/* <div className="bg-gray-900 text-white py-2 px-4 text-center text-sm">
         Free shipping on orders over $50 • Use code: FREESHIP
-      </div>
+      </div> */}
 
       {/* Main header */}
       <div className="container mx-auto px-4 py-4">

@@ -1,3 +1,4 @@
+// lib/auth.ts
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient, Prisma } from "@prisma/client";
@@ -8,7 +9,7 @@ const prisma = new PrismaClient({
   log: ["query", "info", "warn", "error"],
   datasources: {
     db: {
-      url: process.env.DATABASE_URL, // Ensure MongoDB URL is used
+      url: process.env.DATABASE_URL,
     },
   },
 });

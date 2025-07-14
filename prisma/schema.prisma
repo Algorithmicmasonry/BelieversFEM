@@ -70,17 +70,16 @@ model Account {
   @@map("account")
 }
 
+// schema.prisma (partial update)
 model Verification {
-id         String    @id @default(cuid()) @map("_id")
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   value      String
   expiresAt  DateTime
   createdAt  DateTime?
   updatedAt  DateTime?
-
   @@map("verification")
 }
-
 
 // app models
 
