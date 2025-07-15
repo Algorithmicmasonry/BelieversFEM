@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Rethink_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -7,7 +8,7 @@ const inter = Rethink_Sans({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "I.V.I.E",
-  description: "Your all-in-one intelligent Virutal Interface For Enterprises",
+  description: "Your all-in-one intelligent Virtual Interface For Enterprises",
 };
 
 export default function RootLayout({

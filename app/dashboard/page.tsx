@@ -1,26 +1,17 @@
-import { checkUserOnboardingStatus } from '@/actions/user'
-import DashboardPageClient from '@/components/dashboard/dashboard-page-client'
-import { auth } from '@/lib/auth'
-import { headers } from 'next/headers'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { checkUserOnboardingStatus } from '@/actions/user';
+import DashboardPageClient from '@/components/dashboard/dashboard-page-client';
+import { authOptions } from "@/config/auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 const DashboardPage = async () => {
-  const session = await  auth.api.getSession({
-    headers: await headers()
-  })
-
-   if (!session) {
-    return (
-      <div>
-        Not authenticated,{" "}
-        <Link href="/register" className="underline">
-          Go here to Register{" "}
-        </Link>
-      </div>
-    );
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
   }
 
+
+  console.log("This is the session object: ",session)
   const user = session.user;
   console.log("This is the user in the user session: ", user);
   const isOnboarded = await checkUserOnboardingStatus(user.id);

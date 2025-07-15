@@ -37,7 +37,7 @@ export default function RegisterForm() {
 
       if (res.status === 409) {
         setLoading(false);
-        setEmailErr(res.errorMessage);
+        setEmailErr(res.error);
       } else if (res.status === 200) {
         setLoading(false);
         toast.success("Account Created successfully");
@@ -131,7 +131,7 @@ export default function RegisterForm() {
 
         <div className="w-full">
           <SignInSocial provider="google">
-            <Button variant={"outline"} className="w-full ">
+            <Button variant={"outline"} className="w-full bg-primary-foreground text-primary">
               <FaGoogle className="mr-2 w-6 h-6 text-blue-500" />
               Signup with Google
             </Button>

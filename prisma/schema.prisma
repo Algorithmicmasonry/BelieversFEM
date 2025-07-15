@@ -7,21 +7,19 @@
 generator client {
   provider = "prisma-client-js"
 }
-
+ 
 datasource db {
-  provider  = "mongodb"
-  url       = env("PRISMA_ACCELERATE_URL")
-  directUrl = env("DIRECT_DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
-
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   email         String 
-  emailVerified Boolean 
+  emailVerified Boolean?
   image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   firstName     String
   lastName      String
   password String? 
@@ -54,22 +52,23 @@ model Session {
 
 model Account {
   id         String @id @default(auto()) @map("_id") @db.ObjectId
-  accountId             String
-  providerId            String
-  userId                String    @db.ObjectId
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
+ userId                String    @db.ObjectId
+  provider           String
+  providerAccountId  String
+  type               String
+  access_token       String?  
+  refresh_token      String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("account")
+  @@unique([provider, providerAccountId]) // <- THIS is the key!
 }
+
+
 
 // schema.prisma (partial update)
 model Verification {

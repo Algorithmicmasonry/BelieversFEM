@@ -1,16 +1,18 @@
 "use server"
-import {auth} from '@/lib/auth'
+import { authOptions } from '@/config/auth'
 import { db } from '@/prisma/db'
-import { headers } from 'next/headers'
+import { getServerSession } from "next-auth";
+import { redirect } from 'next/navigation';
 
 export const getDashboardLayoutData = async () => {
   // user data such as name, email and avatar
   // user business data such as name, subdomain, whatsapp number, isActive, createdAt
 
   try {
-    const session = await auth.api.getSession({
-      headers: await headers()
-    })
+    const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
 
     const userId = session?.user?.id;
 
@@ -53,3 +55,4 @@ export const getDashboardLayoutData = async () => {
     }
   }
 }
+

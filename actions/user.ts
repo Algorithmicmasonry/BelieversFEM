@@ -5,6 +5,8 @@ import { db } from "@/prisma/db"
 import { LoginProps, UserProps } from "@/types/types"
 import { APIError } from "better-auth/api"
 import { redirect } from "next/navigation"
+import bcrypt from "bcrypt";
+import { revalidatePath } from "next/cache"
 
 
 /**
@@ -40,51 +42,49 @@ export const checkUserOnboardingStatus = async (userId: string): Promise<boolean
 };
 
 
-export const createUser = async (formData: UserProps) => {
-  console.log("Calling create user function")
- const {email,name, firstName, lastName, password, image } = formData
-
- try {
- const newUser =  await auth.api.signUpEmail({
-    body : {
-      name,
-      email,
-      lastName,
-      firstName,
-      password,
+export async function createUser(data: UserProps) {
+  const { email, password, firstName, lastName, name, phone, image } = data;
+  try {
+    // Hash the PAASWORD
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (existingUser) {
+      return {
+        error: `Email already exists`,
+        status: 409,
+        data: null,
+      };
     }
-  })
-
-  console.log("This is the object returned from better auth: ", newUser)
-
-  return {
-    errorMessage: null,
-    status: 200,
-    data: newUser.user,
+    const newUser = await db.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        name,
+        phone,
+        image,
+      },
+    });
+    revalidatePath("/dashboard");
+    // console.log(newUser);
+    return {
+      error: null,
+      status: 200,
+      data: newUser,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      error: `Something Went wrong, Please try again`,
+      status: 500,
+      data: null,
+    };
   }
- } catch (error) {
- if (error instanceof APIError) {
-      switch (error.status) {
-        case "UNPROCESSABLE_ENTITY":
-          return { 
-            errorMessage: "User already exists.",
-             status: 500, 
-             data: null};
-        case "BAD_REQUEST":
-          return { errorMessage: "Invalid email." ,
-            status: 500,
-            data: null
-          };
-        default:
-          return { errorMessage: "Something went wrong.",
-            status: 500,
-            data: null
-           };
-      }
-    }
-    console.error("sign up with email and password has not worked", error);
- }
-  redirect('/dashboard')
 }
 
 export const signIn = async (formData: LoginProps) => {

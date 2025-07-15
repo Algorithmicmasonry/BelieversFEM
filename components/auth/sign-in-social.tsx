@@ -2,10 +2,9 @@
 
 import React from "react";
 import { Button } from "../ui/button";
-import { signIn } from "@/lib/auth-client";
+import { signIn } from "next-auth/react";
 
 export default function SignInSocial({
-  provider,
   children,
 }: {
   provider:
@@ -30,14 +29,7 @@ export default function SignInSocial({
 }) {
   return (
     <Button asChild
-      onClick={async () => {
-        await signIn.social({
-          provider,
-          callbackURL: "/dashboard",
-        });
-      }}
-      type="button"
-      variant={"outline"}
+        onClick={() => signIn("google")}
     >
       {children}
     </Button>
