@@ -95,6 +95,8 @@ export function ImageUploadNormal({
           src={value || "/placeholder.svg"}
           alt="Uploaded preview"
           className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
+          width={100}
+          height={100}
         />
         <Button
           onClick={removeImage}

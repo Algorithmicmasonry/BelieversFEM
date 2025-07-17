@@ -1,88 +1,65 @@
-// ./components/auth/onboarding-form.tsx
-"use client";
+"use client"
 
-import { type FormEvent, useEffect, useState } from "react";
-import {
-  Store,
-  ArrowRight,
-  ArrowLeft,
-  Check,
-  Building,
-  Phone,
-  Package,
-  Plus,
-  Trash2,
-  CreditCard,
-  Loader2,
-} from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Progress } from "@/components/ui/progress";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { handleOnboarding } from "@/actions/handleOnboarding";
-import { ImageUploadNormal } from "./image-upload-normal";
-import type { FormData, Product } from "@/types/types"; // Import Product type
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { type FormEvent, useEffect, useState } from "react"
+import { ArrowRight, ArrowLeft, Check, Building, Phone, Package, Plus, Trash2, CreditCard, Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Progress } from "@/components/ui/progress"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { handleOnboarding } from "@/actions/handleOnboarding"
+import { ImageUploadNormal } from "./image-upload-normal"
+import { ImageUploadMultiple } from "./image-upload-multiple"
+import type { FormData, Product } from "@/types/types"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import Image from "next/image"
 
 export default function OnboardingPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Business Information
-  const [businessName, setBusinessName] = useState("");
-  const [businessType, setBusinessType] = useState("");
-  const [businessImageUrl, setBusinessImageUrl] = useState("");
+  const [businessName, setBusinessName] = useState("")
+  const [businessType, setBusinessType] = useState("")
+  const [customBusinessType, setCustomBusinessType] = useState("")
+  const [businessImageUrl, setBusinessImageUrl] = useState("")
   const [data, setData] = useState<FormData>({
     businessName: "",
     businessImageUrl: "",
     businessType: "",
     whatsappNumber: "",
     products: [],
-    bankAccountNumber: "", // Initialize all properties
+    bankAccountNumber: "",
     bankAccountName: "",
     bankCode: "",
     settlementSchedule: "",
     subdomain: "",
-  });
+  })
 
-  console.log("The name of the game: ", data);
+  console.log("The name of the game: ", data)
 
   // Contact Information
-  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("")
 
   // Banking Information
-  const [bankAccountNumber, setBankAccountNumber] = useState("");
-  const [bankAccountName, setBankAccountName] = useState("");
-  const [bankCode, setBankCode] = useState("");
-  const [settlementSchedule, setSettlementSchedule] = useState("weekly");
-  const [subdomainName, setSubdomainName] = useState("");
+  const [bankAccountNumber, setBankAccountNumber] = useState("")
+  const [bankAccountName, setBankAccountName] = useState("")
+  const [bankCode, setBankCode] = useState("")
+  const [settlementSchedule, setSettlementSchedule] = useState("weekly")
+  const [subdomainName, setSubdomainName] = useState("")
 
   // Products - Initialize with 'images' array
-  const [products, setProducts] = useState<Product[]>([
-    { name: "", description: "", price: "", images: [] },
-  ]);
-  const router = useRouter();
+  const [products, setProducts] = useState<Product[]>([{ name: "", description: "", price: "", images: [] }])
 
-  const totalSteps = 4;
-  const progress = (currentStep / totalSteps) * 100;
+  const router = useRouter()
+
+  const totalSteps = 4
+  const progress = (currentStep / totalSteps) * 100
 
   // Business types
   const businessTypes = [
@@ -119,7 +96,7 @@ export default function OnboardingPage() {
     { value: "gaming", label: "Gaming & Esports" },
     { value: "pets", label: "Pet Services & Supplies" },
     { value: "other", label: "Other" },
-  ];
+  ]
 
   // Nigerian banks
   const banks = [
@@ -142,127 +119,135 @@ export default function OnboardingPage() {
     { code: "032", name: "Union Bank of Nigeria Plc" },
     { code: "035", name: "Wema Bank Plc" },
     { code: "057", name: "Zenith Bank Plc" },
-  ];
+  ]
 
   const addProduct = () => {
     if (products.length < 5) {
-      setProducts([...products, { name: "", description: "", price: "", images: [] }]); // Initialize images as an empty array
+      setProducts([...products, { name: "", description: "", price: "", images: [] }])
     }
-  };
+  }
 
   const removeProduct = (index: number) => {
     if (products.length > 1) {
-      setProducts(products.filter((_, i) => i !== index));
+      setProducts(products.filter((_, i) => i !== index))
     }
-  };
+  }
 
-  // Modify updateProduct to handle 'images'
+  // Updated updateProduct to handle images array properly
   const updateProduct = (index: number, field: keyof Product, value: string | string[]) => {
     const updatedProducts = products.map((product, i) =>
       i === index
         ? {
             ...product,
-            [field]: field === "images" ? (Array.isArray(value) ? value : [value]) : value,
+            [field]: value,
           }
-        : product
-    );
-    setProducts(updatedProducts);
-  };
+        : product,
+    )
+    setProducts(updatedProducts)
+  }
 
   const generateSubdomain = (name: string) => {
     return name
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "-")
       .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
-  };
+      .replace(/^-|-$/g, "")
+  }
 
   const nextStep = () => {
     if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep(currentStep + 1)
     }
-  };
+  }
 
   const prevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      setCurrentStep(currentStep - 1)
     }
-  };
+  }
 
   useEffect(() => {
     if (businessName.trim()) {
-      const generatedSubdomain = generateSubdomain(businessName);
-      setSubdomainName(generatedSubdomain);
+      const generatedSubdomain = generateSubdomain(businessName)
+      setSubdomainName(generatedSubdomain)
     } else {
-      setSubdomainName("");
+      setSubdomainName("")
     }
-  }, [businessName]);
+  }, [businessName])
+
+  // Handle business type change and reset custom type when needed
+  const handleBusinessTypeChange = (value: string) => {
+    setBusinessType(value)
+    if (value !== "other") {
+      setCustomBusinessType("")
+    }
+  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault()
+    setIsLoading(true)
 
     if (!businessName.trim()) {
-      console.log("Business name is required");
-      setIsLoading(false);
-      return; // Don't proceed if validation fails
+      console.log("Business name is required")
+      setIsLoading(false)
+      return
     }
 
-    const formData: FormData = { // Explicitly type formData as FormData
+    // Use custom business type if "other" is selected, otherwise use the selected business type
+    const finalBusinessType = businessType === "other" ? customBusinessType : businessType
+
+    const formData: FormData = {
       businessName,
-      businessType,
+      businessType: finalBusinessType,
       whatsappNumber,
-      products, // This will now match the Product[] type
+      products,
       businessImageUrl,
       bankAccountNumber,
       bankAccountName,
       bankCode,
       settlementSchedule,
       subdomain: subdomainName,
-    };
+    }
 
-    // Update state for other purposes if needed
-    setData(formData);
+    setData(formData)
 
     try {
-      const result = await handleOnboarding(formData);
+      const result = await handleOnboarding(formData)
       if (result.success) {
-        toast.success("Business Onboarded successfully");
-        router.push("/dashboard");
+        toast.success("Business Onboarded successfully")
+        router.push("/dashboard")
       } else {
-        toast.error("Business onboarding failed");
+        toast.error("Business onboarding failed")
       }
-
-      // Pass the fresh data
-      // Handle success
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message);
+        toast.error(error.message)
       } else if (typeof error === "string") {
-        toast.error(error);
+        toast.error(error)
       } else {
-        toast.error("An unexpected error occurred");
+        toast.error("An unexpected error occurred")
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const isStepValid = () => {
     switch (currentStep) {
       case 1:
-        return businessName && businessType;
+        const businessTypeValid = businessType === "other" ? businessType && customBusinessType.trim() : businessType
+        return businessName && businessTypeValid
       case 2:
-        return whatsappNumber;
+        return whatsappNumber
       case 3:
-        return bankAccountNumber && bankAccountName && bankCode;
+        return bankAccountNumber && bankAccountName && bankCode
       case 4:
         // Ensure all products have a name, price, and at least one image
-        return products.every((p) => p.name && p.price && p.images.length > 0);
+        return products.every((p) => p.name && p.price && p.images.length > 0)
       default:
-        return false;
+        return false
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-blue-50 py-8 px-4">
@@ -270,15 +255,14 @@ export default function OnboardingPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <Store className="h-8 w-8 text-orange-500" />
-            <span className="text-2xl font-bold text-gray-900">Ekii</span>
+            <Link href="/">
+              <Image src="/ivie1.png" alt="ivie_logo" width="150" height="100" className="cursor-pointer" />
+            </Link>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Set up your store
+            Set up your personalized assitant with your business information
           </h1>
-          <p className="text-gray-600">
-            {"Let's get your online store ready in just a few steps"}
-          </p>
+          <p className="text-gray-600 mt-2">{"Let's get your account setup and ready ready in just a few steps"}</p>
         </div>
 
         {/* Progress Bar */}
@@ -291,6 +275,7 @@ export default function OnboardingPage() {
           </div>
           <Progress value={progress} className="h-2" />
         </div>
+
         <form onSubmit={handleSubmit}>
           <Card className="border-orange-100 shadow-lg">
             <CardHeader>
@@ -327,6 +312,7 @@ export default function OnboardingPage() {
                 {currentStep === 4 && "Add your products to start selling"}
               </CardDescription>
             </CardHeader>
+
             <CardContent className="space-y-6">
               {/* Step 1: Business Information */}
               {currentStep === 1 && (
@@ -344,10 +330,7 @@ export default function OnboardingPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="businessType">Business Type *</Label>
-                    <Select
-                      value={businessType}
-                      onValueChange={setBusinessType}
-                    >
+                    <Select value={businessType} onValueChange={handleBusinessTypeChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your business type" />
                       </SelectTrigger>
@@ -361,10 +344,22 @@ export default function OnboardingPage() {
                     </Select>
                   </div>
 
+                  {/* Custom Business Type Input - Show when "other" is selected */}
+                  {businessType === "other" && (
+                    <div className="space-y-2">
+                      <Label htmlFor="customBusinessType">Please specify your business type *</Label>
+                      <Input
+                        id="customBusinessType"
+                        value={customBusinessType}
+                        onChange={(e) => setCustomBusinessType(e.target.value)}
+                        placeholder="Enter your business type"
+                        required
+                      />
+                    </div>
+                  )}
+
                   <div className="space-y-2">
-                    <Label htmlFor="businessImage">
-                      Business Logo/Image (Optional)
-                    </Label>
+                    <Label htmlFor="businessImage">Business Logo/Image (Optional)</Label>
                     <ImageUploadNormal
                       value={businessImageUrl}
                       onChange={setBusinessImageUrl}
@@ -375,12 +370,8 @@ export default function OnboardingPage() {
 
                   {businessName && (
                     <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
-                      <p className="text-sm text-gray-600 mb-1">
-                        Your store will be available at:
-                      </p>
-                      <p className="font-medium text-orange-600">
-                        {subdomainName}.ekki.com
-                      </p>
+                      <p className="text-sm text-gray-600 mb-1">Your store will be available at:</p>
+                      <p className="font-medium text-orange-600">{subdomainName}.ekki.com</p>
                     </div>
                   )}
                 </div>
@@ -399,19 +390,15 @@ export default function OnboardingPage() {
                       required
                     />
                     <p className="text-sm text-gray-500">
-                      Customers will use this number to contact you about
-                      orders. Make sure it&apos;s active on WhatsApp.
+                      Customers will use this number to contact you about orders. Make sure it&apos;s active on
+                      WhatsApp.
                     </p>
                   </div>
 
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h3 className="font-medium text-blue-900 mb-2">
-                      Why do we need your WhatsApp?
-                    </h3>
+                    <h3 className="font-medium text-blue-900 mb-2">Why do we need your WhatsApp?</h3>
                     <ul className="text-sm text-blue-700 space-y-1">
-                      <li>
-                        • Customers can contact you directly about products
-                      </li>
+                      <li>• Customers can contact you directly about products</li>
                       <li>• Pre-filled messages make ordering easier</li>
                       <li>• Build trust with direct communication</li>
                     </ul>
@@ -423,13 +410,10 @@ export default function OnboardingPage() {
               {currentStep === 3 && (
                 <div className="space-y-6">
                   <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h3 className="font-medium text-green-900 mb-2">
-                      Payment Setup
-                    </h3>
+                    <h3 className="font-medium text-green-900 mb-2">Payment Setup</h3>
                     <p className="text-sm text-green-700">
-                      We&apos;ll use this information to set up payments for your
-                      store. Your customers will be able to pay directly through
-                      your store.
+                      We&apos;ll use this information to set up payments for your store. Your customers will be able to
+                      pay directly through your store.
                     </p>
                   </div>
 
@@ -470,39 +454,28 @@ export default function OnboardingPage() {
                       placeholder="Account holder name"
                       required
                     />
-                    <p className="text-sm text-gray-500">
-                      This should match the name on your bank account exactly
-                    </p>
+                    <p className="text-sm text-gray-500">This should match the name on your bank account exactly</p>
                   </div>
 
                   <div className="space-y-3">
                     <Label>Settlement Schedule</Label>
-                    <RadioGroup
-                      value={settlementSchedule}
-                      onValueChange={setSettlementSchedule}
-                    >
+                    <RadioGroup value={settlementSchedule} onValueChange={setSettlementSchedule}>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="weekly" id="weekly" />
-                        <Label htmlFor="weekly">
-                          Weekly - Receive payments every week (Recommended)
-                        </Label>
+                        <Label htmlFor="weekly">Weekly - Receive payments every week (Recommended)</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="monthly" id="monthly" />
-                        <Label htmlFor="monthly">
-                          Monthly - Receive payments every month
-                        </Label>
+                        <Label htmlFor="monthly">Monthly - Receive payments every month</Label>
                       </div>
                     </RadioGroup>
                   </div>
 
                   <div className="p-4 bg-gray-50 rounded-lg border">
-                    <h3 className="font-medium text-gray-900 mb-2">
-                      Transaction Fees
-                    </h3>
+                    <h3 className="font-medium text-gray-900 mb-2">Transaction Fees</h3>
                     <p className="text-sm text-gray-600">
-                      A small fee of 2.5% will be charged on each successful
-                      transaction to cover payment processing costs.
+                      A small fee of 2.5% will be charged on each successful transaction to cover payment processing
+                      costs.
                     </p>
                   </div>
                 </div>
@@ -514,6 +487,7 @@ export default function OnboardingPage() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-medium">Add Your Products</h3>
                     <Button
+                      type="button"
                       onClick={addProduct}
                       disabled={products.length >= 5}
                       variant="outline"
@@ -529,11 +503,10 @@ export default function OnboardingPage() {
                     <Card key={index} className="border-gray-200">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-base">
-                            Product {index + 1}
-                          </CardTitle>
+                          <CardTitle className="text-base">Product {index + 1}</CardTitle>
                           {products.length > 1 && (
                             <Button
+                              type="button"
                               onClick={() => removeProduct(index)}
                               variant="ghost"
                               size="sm"
@@ -546,64 +519,44 @@ export default function OnboardingPage() {
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="space-y-2">
-                          <Label htmlFor={`product-name-${index}`}>
-                            Product Name *
-                          </Label>
+                          <Label htmlFor={`product-name-${index}`}>Product Name *</Label>
                           <Input
                             id={`product-name-${index}`}
                             value={product.name}
-                            onChange={(e) =>
-                              updateProduct(index, "name", e.target.value)
-                            }
+                            onChange={(e) => updateProduct(index, "name", e.target.value)}
                             placeholder="e.g., Premium T-Shirt"
                             required
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor={`product-description-${index}`}>
-                            Description
-                          </Label>
+                          <Label htmlFor={`product-description-${index}`}>Description</Label>
                           <Textarea
                             id={`product-description-${index}`}
                             value={product.description}
-                            onChange={(e) =>
-                              updateProduct(
-                                index,
-                                "description",
-                                e.target.value
-                              )
-                            }
+                            onChange={(e) => updateProduct(index, "description", e.target.value)}
                             placeholder="Brief description of your product"
                             rows={2}
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor={`product-image-${index}`}>
-                            Product Image
-                          </Label>
-                          <ImageUploadNormal
-                            value={product.images[0] || ""} // Pass the first image URL or an empty string
-                            onChange={(url) =>
-                              updateProduct(index, "images", [url]) // Update the images array
-                            }
-                            uploadType="product"
-                            placeholder="Upload Product Image"
+                          <Label htmlFor={`product-images-${index}`}>Product Images *</Label>
+                          <ImageUploadMultiple
+                            value={product.images}
+                            onChange={(urls) => updateProduct(index, "images", urls)}
+                            maxImages={5}
+                            placeholder="Upload Product Images"
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor={`product-price-${index}`}>
-                            Price (₦) *
-                          </Label>
+                          <Label htmlFor={`product-price-${index}`}>Price (₦) *</Label>
                           <Input
                             id={`product-price-${index}`}
                             type="number"
                             value={product.price}
-                            onChange={(e) =>
-                              updateProduct(index, "price", e.target.value)
-                            }
+                            onChange={(e) => updateProduct(index, "price", e.target.value)}
                             placeholder="0.00"
                             min="0"
                             step="0.01"
@@ -615,8 +568,8 @@ export default function OnboardingPage() {
                   ))}
 
                   <p className="text-sm text-gray-500">
-                    You can add up to 5 products during setup. More products can
-                    be added later from your dashboard.
+                    You can add up to 5 products during setup. More products can be added later from your dashboard.
+                    Each product can have up to 5 images.
                   </p>
                 </div>
               )}
@@ -624,10 +577,11 @@ export default function OnboardingPage() {
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-6">
                 <Button
+                  type="button"
                   onClick={prevStep}
                   disabled={currentStep === 1}
                   variant="outline"
-                  className="border-gray-300"
+                  className="border-gray-300 bg-transparent"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Previous
@@ -635,6 +589,7 @@ export default function OnboardingPage() {
 
                 {currentStep < totalSteps ? (
                   <Button
+                    type="button"
                     onClick={nextStep}
                     className="bg-orange-500 hover:bg-orange-600"
                     disabled={!isStepValid()}
@@ -643,11 +598,7 @@ export default function OnboardingPage() {
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 ) : (
-                  <Button
-                    type="submit"
-                    className="bg-green-500 hover:bg-green-600"
-                    disabled={!isStepValid()}
-                  >
+                  <Button type="submit" className="bg-green-500 hover:bg-green-600" disabled={!isStepValid()}>
                     {isLoading ? (
                       <Loader2 className="animate-spin" />
                     ) : (
@@ -664,5 +615,5 @@ export default function OnboardingPage() {
         </form>
       </div>
     </div>
-  );
+  )
 }
