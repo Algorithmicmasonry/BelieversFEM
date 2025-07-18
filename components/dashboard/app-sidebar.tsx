@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -12,22 +12,24 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
+  Store,
+} from "lucide-react";
 
-import { NavMain } from "./nav-main" 
-import { NavProjects } from "./nav-projects" 
-import { NavUser } from "./nav-user" 
-import { TeamSwitcher } from "./team-switcher" 
+import { NavMain } from "./nav-main";
+import { NavProjects } from "./nav-projects";
+import { NavUser } from "./nav-user";
+import { TeamSwitcher } from "./team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { AppSidebarProps } from "@/types/types";
 
 // This is sample data.
-const data = {
+const navData = {
   user: {
     name: "shadcn",
     email: "m@example.com",
@@ -52,9 +54,9 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Marketplace",
       url: "#",
-      icon: SquareTerminal,
+      icon: Store,
       isActive: true,
       items: [
         {
@@ -154,22 +156,30 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ data }: AppSidebarProps) {
+  console.log("This is the business data from the side bar", data.business);
+
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        {data.business && (
+          <TeamSwitcher
+            teams={{
+              businessName: data.business.name,
+              businessType: data.business.type,
+              businessImageUrl: data.business.image,
+            }}
+          />
+        )}
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={navData.navMain} />
+        <NavProjects projects={navData.projects} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+      <SidebarFooter>{data.user && <NavUser user={data.user} />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

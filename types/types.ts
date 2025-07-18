@@ -57,3 +57,23 @@ export interface FormErrors {
   };
   [key: string]: any; // Allow for other potential error keys if needed
 }
+
+
+export interface AppSidebarProps {
+  data: {
+    user: {
+      name: string;
+      email: string;
+      avatar?: string;
+    } | null;
+    business: {
+      name: string;
+      type?: string;
+      image?: string;
+      subdomain: string;
+      whatsappNumber: string;
+      isActive: boolean;
+      createdAt: string;
+    } | null;
+  };
+}

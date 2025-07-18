@@ -32,6 +32,8 @@ export default async function RootLayout({
   business: response.business
     ? {
         name: response.business.businessName, // map to `name`
+        type: response.business.businessType,
+        image: response.business.businessImageUrl,
         subdomain: response.business.subdomain,
         whatsappNumber: response.business.whatsappNumber,
         isActive: response.business.isActive,
@@ -39,7 +41,7 @@ export default async function RootLayout({
       }
     : null,
 };
-  console.log("This is the dashboard layout data:  ", response)
+ 
 
 
   return (
