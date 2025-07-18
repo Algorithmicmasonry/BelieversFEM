@@ -1,24 +1,19 @@
 "use client";
 
-import * as React from "react";
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
   Command,
+  FileText,
   Frame,
   GalleryVerticalEnd,
   Map,
+  Megaphone,
   PieChart,
-  Settings2,
-  SquareTerminal,
-  Store,
+  Settings,
+  ShieldCheck,
+  Store
 } from "lucide-react";
 
-import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-projects";
-import { NavUser } from "./nav-user";
-import { TeamSwitcher } from "./team-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +22,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { AppSidebarProps } from "@/types/types";
+import { NavMain } from "./nav-main";
+import { NavUser } from "./nav-user";
+import { TeamSwitcher } from "./team-switcher";
+import { SidebarViewStoreCard} from "./view-store-card";
 
 // This is sample data.
 const navData = {
@@ -60,81 +59,96 @@ const navData = {
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Products",
+          url: "/dashboard/products",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Orders",
+          url: "/dashboard/orders",
         },
         {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
+          title: "Tracking",
+          url: "/dashboard/tracking",
         },
         {
-          title: "Explorer",
-          url: "#",
+          title: "Customers",
+          url: "/dashboard/customers",
         },
         {
-          title: "Quantum",
-          url: "#",
+          title: "Notifications",
+          url: "/dashboard/notifications",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Marketing",
       url: "#",
-      icon: BookOpen,
+      icon: Megaphone,
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "Content-Calendar",
+          url: "/dashboard/calendar",
         },
         {
-          title: "Get Started",
-          url: "#",
+          title: "Emails",
+          url: "/dashboard/emails",
         },
         {
-          title: "Tutorials",
-          url: "#",
+          title: "Analytics",
+          url: "/dashboard/analytics",
         },
         {
-          title: "Changelog",
-          url: "#",
+          title: "Automation",
+          url: "/dashboard/automation",
+        },
+        {
+          title: "Messages",
+          url: "/dashboard/messages",
+        },
+      ],
+    },
+    {
+      title: "Compliance",
+      url: "#",
+      icon: ShieldCheck,
+      items: [
+        {
+          title: "Profit/Loss Statement",
+          url: "/dashboard/profit_loss_statement",
+        },
+        {
+          title: "CAC Registration",
+          url: "/dashboard/cac_registration",
+        },
+        {
+          title: "Trademark",
+          url: "/dashboard/trademark",
+        },
+        {
+          title: "SMEDAN",
+          url: "/dashboard/smedan",
+        },
+      ],
+    },
+    {
+      title: "Book-Keeping",
+      url: "#",
+      icon: FileText,
+      items: [
+        {
+          title: "Balance Sheet",
+          url: "/dashboard/settings",
         },
       ],
     },
     {
       title: "Settings",
       url: "#",
-      icon: Settings2,
+      icon: Settings,
       items: [
         {
           title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          url: "/dashboard/settings",
         },
       ],
     },
@@ -176,8 +190,9 @@ export function AppSidebar({ data }: AppSidebarProps) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navData.navMain} />
-        <NavProjects projects={navData.projects} />
+        {/* <NavProjects projects={navData.projects} /> */}
       </SidebarContent>
+      <SidebarViewStoreCard/>
       <SidebarFooter>{data.user && <NavUser user={data.user} />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
