@@ -1,8 +1,8 @@
+// actions/handleOnboarding.ts
 "use server"
 import { authOptions } from "@/config/auth";
 import { db } from "@/prisma/db";
 import { getServerSession } from "next-auth";
-
 
 export interface FormData {
   businessName: string
@@ -19,12 +19,11 @@ export interface FormData {
   bankAccountName: string
   bankCode: string
   settlementSchedule: string
-  subdomain: string
+  subdomain: string // This will still come as raw user input
 }
 
 export const handleOnboarding = async (data: FormData) => {
   try {
-    // Get the current session
     const session = await getServerSession(authOptions)
     const userId = session?.user?.id
 
@@ -42,10 +41,9 @@ export const handleOnboarding = async (data: FormData) => {
       bankAccountName,
       bankCode,
       settlementSchedule,
-      subdomain,
+      subdomain, // Raw user input here
     } = data
 
-    // Validate required fields
     if (!businessName.trim() || !businessType.trim() || !whatsappNumber.trim() || !products || products.length === 0) {
       console.error("Required fields missing for onboarding: ", {
         businessName,
@@ -70,28 +68,29 @@ export const handleOnboarding = async (data: FormData) => {
       }
     }
 
-    // Check if subdomain already exists and make it unique if necessary
-    let uniqueSubdomain = subdomain
-    let counter = 1
+    // --- CRITICAL CHANGE HERE ---
+    // Sanitize the initial subdomain input BEFORE checking for uniqueness
+    const baseSanitizedSubdomain = subdomain.toLowerCase().replace(/[^a-z0-9-]/g, '');
+
+    let uniqueSubdomain = baseSanitizedSubdomain; // Start with the sanitized version
+    let counter = 1;
     while (true) {
-      const existingBusiness = await db.business.findUnique({
-        where: { subdomain: uniqueSubdomain },
-      })
-      if (!existingBusiness) break
-      uniqueSubdomain = `${subdomain}-${counter}`
-      counter++
+      const existing = await db.business.findUnique({
+        where: { subdomain: uniqueSubdomain }, // Querying with the potentially incremented, SANITIZED subdomain
+      });
+      if (!existing) break;
+      uniqueSubdomain = `${baseSanitizedSubdomain}-${counter}`; // Increment the sanitized base
+      counter++;
     }
 
     // Create the business and products in a transaction
-    // Create the business and products in a transaction
     const result = await db.$transaction(async (prisma) => {
-      // Create the business
       const business = await prisma.business.create({
         data: {
           userId,
           businessName,
           businessType,
-          subdomain: uniqueSubdomain,
+          subdomain: uniqueSubdomain, // <--- SAVING the SANITIZED and unique subdomain
           whatsappNumber,
           isActive: true,
           businessImageUrl,
@@ -102,7 +101,6 @@ export const handleOnboarding = async (data: FormData) => {
         },
       });
 
-      // Create the products
       const createdProducts = await Promise.all(
         products.map((product, index) =>
           prisma.product.create({
@@ -123,7 +121,6 @@ export const handleOnboarding = async (data: FormData) => {
         ),
       );
 
-      // Update user's onboarded status
       await prisma.user.update({
         where: { id: userId },
         data: { onboarded: true },
@@ -134,7 +131,7 @@ export const handleOnboarding = async (data: FormData) => {
         products: createdProducts,
       };
     }, {
-      timeout: 15000 // Increased timeout to 15 seconds (adjust as needed)
+      timeout: 15000
     });
 
     console.log("User onboarding completed successfully:", {

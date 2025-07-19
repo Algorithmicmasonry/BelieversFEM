@@ -7,11 +7,13 @@
 generator client {
   provider = "prisma-client-js"
 }
- 
+
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  // CHANGE THIS LINE: Point to DIRECT_DATABASE_URL
+  url      = env("DIRECT_DATABASE_URL") // <--- Changed from env("DATABASE_URL")
 }
+
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
