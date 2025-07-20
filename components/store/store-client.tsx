@@ -1,29 +1,43 @@
-import Header from "./Header" 
-import Hero from "./Hero" 
-import FeaturedProducts from "./featured-products" 
-import Categories from "./categories" 
-import ProductGrid from "./product-grid" 
+import { Business as PrismaBusiness, Product as PrismaProduct } from '@prisma/client'
+import Footer from "./Footer"
+import Header from "./Header"
+import Hero from "./Hero"
 import Newsletter from "./Newsletter"
-import Footer from "./Footer" 
-import { Business, Product, Image as PrismaImage } from '@prisma/client';
+import FeaturedProducts from "./featured-products"
+import ProductGrid from "./product-grid"
+
+interface TransformedProduct extends PrismaProduct {
+  images: string[];
+  originalPrice?: number;
+  rating?: number;
+  reviews?: number;
+  badge?: string;
+}
+
+interface TransformedBusinessData extends PrismaBusiness {
+  products: TransformedProduct[];
+}
+
 
 // 1. Define the props interface for StoreClient
 interface StoreClientProps {
-  business: Business; // The full Business object from Prisma
-  products: (Product & { images: PrismaImage[] })[]; // Array of Products, each including its images
+  business: TransformedBusinessData; // Now expects the transformed business data
+  products: TransformedProduct[];    // Now expects the transformed products
 }
 
 
 export default function StoreClient({ business, products }: StoreClientProps) {
+
+  console.log("this is the product passed to the store client: ", products);
   return (
     <div className="min-h-screen bg-white">
-      <Header />
-      <Hero businessName="StyleHub" businessLogo="/placeholder.svg?height=120&width=120" />
-      <Categories />
-      <FeaturedProducts />
-      <ProductGrid />
-      <Newsletter />
-      <Footer />
+      <Header businessName={business.businessName} />
+      <Hero businessName={business.businessName} businessLogo={business.businessImageUrl} />
+      {/* <Categories /> */}
+       <FeaturedProducts products={products}/>
+      <ProductGrid products={products} number={business.whatsappNumber}/>
+      <Newsletter  number={business.whatsappNumber}/>
+      <Footer business={business}/>
     </div>
   )
 }

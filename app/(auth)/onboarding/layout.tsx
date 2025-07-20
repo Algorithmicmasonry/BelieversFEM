@@ -7,7 +7,7 @@ import "@/app/globals.css"
 const inter = Rethink_Sans({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "EKii - Onboarding",
+  title: "IVIE - Onboarding",
   description: "Setting up your business to enjoy all benefits of the platform",
 };
 

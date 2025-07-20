@@ -29,7 +29,7 @@ export default function RegisterPage() {
         <Image
           width={400}
           height={400}
-          src="/ekii_register_page.jpg" // Use your existing login image
+          src="/ivie_register_page.jpg" // Use your existing login image
           alt="Login Image"
           className="absolute inset-0 h-full w-full object-fit dark:brightness-[0.2] dark:grayscale"
         />

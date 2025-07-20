@@ -19,7 +19,7 @@ export default function HeroSection() {
       <div className="animate-blob animation-delay-2000 absolute right-0 top-0 h-96 w-96 rounded-full bg-orange-200 opacity-30 mix-blend-multiply blur-3xl filter"></div>
       <div className="animate-blob animation-delay-4000 absolute -bottom-20 left-1/3 h-96 w-96 rounded-full bg-brown-300 opacity-20 mix-blend-multiply blur-3xl filter"></div>
       <div className="container max-w-6xl mx-auto px-4 md:px-6 flex flex-col items-center text-center space-y-8">
-        <SmallTitle title=" Welcome to Ekki Store (v1)🛍️" />
+        <SmallTitle title=" Welcome to Ivie (v1)🛍️" />
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl max-w-3xl mx-auto">
           Launch Your Online Store
           <span className="text-primary"> in Minutes</span>

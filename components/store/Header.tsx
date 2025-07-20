@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { useRouter } from "next/navigation"
 
-export default function Header() {
+interface StoreHeaderProps {
+   businessName: string | null;
+}
+
+export default function Header({businessName}: StoreHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [cartCount] = useState(3)
 
@@ -16,7 +20,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
       {/* Top bar */}
-      {/* <div className="bg-gray-900 text-white py-2 px-4 text-center text-sm">
+      {/* <div className="bg-primary text-white py-2 px-4 text-center text-sm">
         Free shipping on orders over $50 • Use code: FREESHIP
       </div> */}
 
@@ -28,19 +32,19 @@ export default function Header() {
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
-            <h1 className="text-2xl font-bold text-gray-900">StyleHub</h1>
+            <h1 className="text-2xl font-bold text-primary">{businessName}</h1>
           </div>
 
           {/* Search bar - hidden on mobile */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary h-4 w-4" />
               <Input type="search" placeholder="Search products..." className="pl-10 pr-4 w-full" />
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <User className="h-5 w-5" />
             </Button>
@@ -55,13 +59,13 @@ export default function Header() {
                 </Badge>
               )}
             </Button>
-          </div>
+          </div> */}
         </div>
 
         {/* Mobile search */}
         <div className="md:hidden mt-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary h-4 w-4" />
             <Input type="search" placeholder="Search products..." className="pl-10 pr-4 w-full" />
           </div>
         </div>
@@ -70,32 +74,32 @@ export default function Header() {
         <nav className={`${isMenuOpen ? "block" : "hidden"} md:block mt-4`}>
           <ul className="flex flex-col md:flex-row md:justify-center space-y-2 md:space-y-0 md:space-x-8">
             <li>
-              <a href="#" className="block py-2 text-gray-700 hover:text-gray-900 font-medium">
+              <a href="#" className="block py-2 text-primary hover:text-primary font-medium">
                 Home
               </a>
             </li>
             <li>
-              <a href="#" className="block py-2 text-gray-700 hover:text-gray-900 font-medium">
+              <a href="#" className="block py-2 text-primary hover:text-primary font-medium">
                 Shop All
               </a>
             </li>
             <li>
-              <a href="#" className="block py-2 text-gray-700 hover:text-gray-900 font-medium">
+              <a href="#" className="block py-2 text-primary hover:text-primary font-medium">
                 Categories
               </a>
             </li>
             <li>
-              <a href="#" className="block py-2 text-gray-700 hover:text-gray-900 font-medium">
+              <a href="#" className="block py-2 text-primary hover:text-primary font-medium">
                 Sale
               </a>
             </li>
             <li>
-              <a href="#" className="block py-2 text-gray-700 hover:text-gray-900 font-medium">
+              <a href="#" className="block py-2 text-primary hover:text-primary font-medium">
                 About
               </a>
             </li>
             <li>
-              <a href="#" className="block py-2 text-gray-700 hover:text-gray-900 font-medium">
+              <a href="#" className="block py-2 text-primary hover:text-primary font-medium">
                 Contact
               </a>
             </li>

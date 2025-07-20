@@ -32,9 +32,27 @@ export interface Product {
   images: string[];
 }
 
+export interface StoreProduct {
+  id: string;
+  businessId: string;
+  name: string;
+  description: string | null;
+  price: number;
+  isActive: boolean;
+  sortOrder: number;
+  createdAt: Date;
+  updatedAt: Date;
+  images: string[]; // This is crucial: it's a string array (URLs)
+  originalPrice?: number;
+  rating?: number;
+  reviews?: number;
+  badge?: string;
+}
+
 export interface FormData {
   businessName: string;
   businessType: string;
+  businessDescription: string;
   whatsappNumber: string;
   businessImageUrl: string;
   products: Product[];

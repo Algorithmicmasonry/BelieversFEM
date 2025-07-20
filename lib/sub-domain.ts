@@ -45,9 +45,6 @@ export async function getSubdomainData(subdomain: string): Promise<FullBusinessD
       return null;
     }
 
-    // The 'business' object now contains all its fields AND the 'products' array
-    // (with each product also containing its 'images' array).
-    // We cast it to FullBusinessData to ensure TypeScript knows its full shape.
     return business as FullBusinessData;
 
   } catch (error) {

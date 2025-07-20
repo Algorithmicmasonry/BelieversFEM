@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 export interface FormData {
   businessName: string
   businessImageUrl: string
+  businessDescription: string
   businessType: string
   whatsappNumber: string
   products: Array<{
@@ -34,6 +35,7 @@ export const handleOnboarding = async (data: FormData) => {
     const {
       businessName,
       businessType,
+      businessDescription,
       businessImageUrl,
       whatsappNumber,
       products,
@@ -90,6 +92,7 @@ export const handleOnboarding = async (data: FormData) => {
           userId,
           businessName,
           businessType,
+          businessDescription,
           subdomain: uniqueSubdomain, // <--- SAVING the SANITIZED and unique subdomain
           whatsappNumber,
           isActive: true,

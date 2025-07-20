@@ -22,14 +22,17 @@ import Image from "next/image"
 export default function OnboardingPage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
+  const url = process.env.NEXT_PUBLIC_ROOT_DOMAIN
 
   // Business Information
   const [businessName, setBusinessName] = useState("")
+  const [businessDescription, setBusinessDescription] = useState("")
   const [businessType, setBusinessType] = useState("")
   const [customBusinessType, setCustomBusinessType] = useState("")
   const [businessImageUrl, setBusinessImageUrl] = useState("")
   const [data, setData] = useState<FormData>({
     businessName: "",
+    businessDescription: "",
     businessImageUrl: "",
     businessType: "",
     whatsappNumber: "",
@@ -41,7 +44,7 @@ export default function OnboardingPage() {
     subdomain: "",
   })
 
-  console.log("The name of the game: ", data)
+ 
 
   // Contact Information
   const [whatsappNumber, setWhatsappNumber] = useState("")
@@ -198,6 +201,7 @@ export default function OnboardingPage() {
 
     const formData: FormData = {
       businessName,
+      businessDescription,
       businessType: finalBusinessType,
       whatsappNumber,
       products,
@@ -327,6 +331,16 @@ export default function OnboardingPage() {
                       required
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="businessDescriptioin">Business Description *</Label>
+                    <Input
+                      id="businessDescription"
+                      value={businessDescription}
+                      onChange={(e) => setBusinessDescription(e.target.value)}
+                      placeholder="Write a brief description of your business"
+                      required
+                    />
+                  </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="businessType">Business Type *</Label>
@@ -371,7 +385,7 @@ export default function OnboardingPage() {
                   {businessName && (
                     <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
                       <p className="text-sm text-gray-600 mb-1">Your store will be available at:</p>
-                      <p className="font-medium text-orange-600">{subdomainName}.ekki.com</p>
+                      <p className="font-medium text-orange-600">{`${subdomainName}.${url}`}</p>
                     </div>
                   )}
                 </div>

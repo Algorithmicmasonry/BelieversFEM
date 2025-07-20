@@ -192,7 +192,7 @@ export function AppSidebar({ data }: AppSidebarProps) {
         <NavMain items={navData.navMain} />
         {/* <NavProjects projects={navData.projects} /> */}
       </SidebarContent>
-      <SidebarViewStoreCard/>
+     {data.business && <SidebarViewStoreCard subdomain={data.business.subdomain}/>}
       <SidebarFooter>{data.user && <NavUser user={data.user} />}</SidebarFooter>
       <SidebarRail />
     </Sidebar>

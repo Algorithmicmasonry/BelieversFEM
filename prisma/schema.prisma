@@ -90,6 +90,7 @@ model Business {
   userId          String    @unique @map("user_id") @db.ObjectId
   businessName    String    @map("business_name")
   businessType    String 
+  businessDescription String?
   businessImageUrl String?
   subdomain       String    @unique
   whatsappNumber  String    @map("whatsapp_number")

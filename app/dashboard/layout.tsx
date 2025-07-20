@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 const inter = Rethink_Sans({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "EKii - dashboard",
+  title: "IVIE - dashboard",
   description: "Access your data, store and analytics",
 };
 

@@ -30,7 +30,7 @@ export default function Logo({
       //     </span>
       //   </div>
       //   <span className={cn(" font-bold text-xl", size === "lg" && "text-4xl")}>
-      //     <span className="text-primary">Ekii</span>
+      //     <span className="text-primary">IVIE</span>
       //   </span>
       // </div>
       // </Link>
