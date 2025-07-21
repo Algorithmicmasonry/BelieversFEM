@@ -34,9 +34,9 @@ import Link from "next/link";
 import * as React from "react";
 
 import { getInitials } from "@/lib/generateInitials";
-import { Session } from "better-auth"; 
 import Logo from "@/global/logo";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Session } from "@prisma/client";
 
 const features = [
   {
