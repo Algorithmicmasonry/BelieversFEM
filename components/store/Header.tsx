@@ -1,11 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { Search, ShoppingCart, Menu, X, User, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { useRouter } from "next/navigation"
+import { Menu, Search, X } from "lucide-react"
+import { useState } from "react"
 
 interface StoreHeaderProps {
    businessName: string | null;
@@ -13,9 +11,10 @@ interface StoreHeaderProps {
 
 export default function Header({businessName}: StoreHeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cartCount] = useState(3)
 
-  const router = useRouter()
+
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">

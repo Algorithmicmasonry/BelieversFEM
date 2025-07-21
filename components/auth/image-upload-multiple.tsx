@@ -99,10 +99,12 @@ export function ImageUploadMultiple({
               <div className="aspect-square rounded-lg overflow-hidden border border-gray-200">
                 {url.startsWith("data:") ? (
                   // Handle data URLs (base64 images)
-                  <img
+                  <Image
                     src={url || "/placeholder.svg"}
                     alt={`Product image ${index + 1}`}
                     className="w-full h-full object-cover"
+                    width={50}
+                    height={100}
                   />
                 ) : (
                   // Handle regular URLs

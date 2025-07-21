@@ -30,6 +30,7 @@ export default function OnboardingPage() {
   const [businessType, setBusinessType] = useState("")
   const [customBusinessType, setCustomBusinessType] = useState("")
   const [businessImageUrl, setBusinessImageUrl] = useState("")
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState<FormData>({
     businessName: "",
     businessDescription: "",

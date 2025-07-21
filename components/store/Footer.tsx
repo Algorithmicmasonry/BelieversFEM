@@ -1,6 +1,6 @@
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react"
+import { Business } from '@prisma/client';
+import { Facebook, Instagram, Phone, Twitter, Youtube } from "lucide-react";
 import Link from 'next/link'; // Import Link for internal routing
-import { Business } from '@prisma/client'
 
 interface FooterProps {
   business: Business

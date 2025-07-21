@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { authOptions } from "@/config/auth";
 import ViewStoreButton from "@/global/view-store-button";
 
 

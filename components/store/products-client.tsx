@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Star, Heart, Grid, List } from "lucide-react"
-import Header from "./Header"
-import Footer from "./Footer"
+// import Header from "./Header"
+// import Footer from "./Footer"
 
 const allProducts = [
   {
@@ -124,7 +124,7 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      {/* <Header /> */}
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -272,7 +272,7 @@ export default function ProductsPage() {
         )}
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
